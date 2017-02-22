@@ -1,0 +1,66 @@
+@import "colours.scss";
+
+.tree-container {
+  clear: both;
+  overflow: auto;
+}
+
+.clearfix:before,
+.clearfix:after {
+  content: " ";
+  display: table;
+}
+
+.clearfix:after {
+  clear: both;
+}
+
+.roleTitlesContainer,
+.offerStatusesContainer,
+.checklistContainer,
+.cohortTitlesContainer,
+.taskGroupGroupLabelsContainer,
+.taskGroupLabelsContainer {
+
+  .roleTitlesContainerHeader,
+  .offerStatusesContainerHeader,
+  .checklistContainerHeader,
+  .cohortTitlesContainerHeader,
+  .taskGroupGroupLabelsContainerHeader,
+  .taskGroupLabelsContainerHeader {
+    margin-bottom: 5px;
+
+    .gridTitle {
+      font-size: 18px;
+      font-weight: bold;
+      padding-top:10px;
+    }
+  }
+
+  .button-custom-sm {
+        border: 0px none;
+        border-radius: 3px;
+        font-size: 12px;
+        font-weight: bold;
+        @extend .white;
+        letter-spacing: 0.025em;
+        padding: 8px 16px;
+        text-decoration: none;
+        cursor: pointer;
+        background-color: $blue-dark;
+        transition: all 0.25s ease-out;
+        float: right !important;
+        margin-left: 5px;
+
+        &:hover {
+            background-color: $blue;
+            color: $white;
+        }
+  }
+
+  .scrollable {
+    overflow-y: auto;
+    overflow-x: hidden;
+    height: 570px;
+  }
+}

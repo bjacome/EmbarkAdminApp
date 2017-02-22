@@ -1,0 +1,81 @@
+<!-- navigator -->
+<nav class="main-menu main-menu-opaque" role="navigation" ng-if="$ctrl.loggedUser">
+    <div class="main-menu-header">
+        <!-- left side -->
+        <div class="header-left">
+            <a class="header-brand hidden-xs hidden-sm" ng-ref="#/homepage">
+                <object tabindex="1" title="RBC Logo" aria-label="RBC Logo" style="pointer-events: none;" type="image/svg+xml" data="images/ic-rbc-logo.svg">RBC Logo</object>
+            </a>
+          </div>
+
+          <!-- right side -->
+        <div class="header-right">
+            <ul class="header-menu">
+              <li>
+                  <div  class="button-custom" role="button" data-toggle="modal" data-target="#passwordModal" data-i18n="_ChangePassword_"></div>
+              </li>
+              <li>
+                  <div  class="button-custom" role="button" ng-click="logout()" data-i18n="_SignOutButtonLabel_"></div>
+              </li>
+            </ul>
+        </div>
+      </div>
+    <!-- actual menu -->
+    <div class="main-menu-nav hidden-xs hidden-sm" ng-if="$ctrl.loggedUser.isSuperuser">
+        <li ng-repeat="route in $ctrl.loggedUser.routes" >
+            <a  ng-href ng-click="goToView(route)" class="menu-label text-uppercase"><div data-i18n={{route.label}}></div></a>
+        </li>
+    </div>
+</nav>
+<div ng-if="$ctrl.loggedUser !== undefined" class="page-header">
+  <h1>
+    <i class="material-icons md-48 ma-r-4">{{icon}}</i>
+    <span data-i18n="{{title}}"/>
+  </h1>
+</div>
+<!-- Modal -->
+  <div class="modal fade" id="passwordModal" role="dialog">
+    <div class="modal-dialog password-modal">
+
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <div class="row">
+            <div class="col-md-12">
+              <h4 class="modal-title col-sm-6" data-i18n="_ChangePassword_"></h4>
+              <div class="col-sm-6">
+                <button type="button" class="button-custom" ng-click="changePassword(passwordForm)"  data-i18n="_SaveButton_"></button>
+                <button type="button" class="button-custom" data-dismiss="modal" data-i18n="_CloseButton_"></button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <alert ng-model="passwordAlert"></alert>
+        <div class="modal-body">
+          <div class="row">
+            <form novalidate class="form-horizontal col-md-12"  id="passwordForm" name="passwordForm" ng-model="passwordForm" novalidate>
+               <div class="form-group">
+                 <label class="control-label col-sm-5 left-indent" for="oldPassword" data-i18n="_OldPasswordInput_"></label>
+                 <div class="col-sm-7">
+                   <input class="form-control" ng-model="passwordForm.oldPassword" type="password" required>
+                 </div>
+               </div>
+                <div class="form-group">
+                  <label class="control-label col-sm-5 left-indent" for="newPassword" data-i18n="_NewPasswordInput_"></label>
+                  <div class="col-sm-7">
+                    <input class="form-control" ng-model="passwordForm.newPassword" type="password" required>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="control-label col-sm-5 left-indent" for="confirmNewPassword" data-i18n="_NewPasswordConfirmInput_"></label>
+                  <div class="col-sm-7">
+                    <input type="password" class="form-control" ng-model="passwordForm.confirmNewPassword" required>
+                  </div>
+                </div>
+            </form>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>

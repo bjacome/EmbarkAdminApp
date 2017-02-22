@@ -1,0 +1,45 @@
+<div class="container-fluid center-text">
+  <div class="loginWindow">
+    <div class="background-image"></div>
+    <div class="signIn">
+      <div class="signInForm">
+        <object class="rbcLogo" type="image/svg+xml" data="images/ic-rbc-logo.svg">Your browser does not support SVG</object>
+        <!-- login START-->
+        <form ng-if="loginMode === 'login'" novalidate name="loginForm">
+          <div class="login-header enhanced" data-i18n="_SignInHeader_"></div>
+          <input type="text" tabindex="1" required ng-focus="clearLoginErrorMessage()" class="inputField {{loginIdErrorClass}}" data-i18n-attr="{{loginIdPlaceholder}}|placeholder"
+          ng-model="loginFormData.loginId">
+          <input type="password" tabindex="2" required ng-focus="clearLoginErrorMessage()" class="inputField {{loginPasswordErrorClass}}"
+          data-i18n-attr="{{loginPasswordPlaceholder}}|placeholder" ng-model="loginFormData.loginPassword">
+          <div class="button-transparent loginButton" tabindex="3" role="button" ng-click="loginUser(loginFormData)" data-i18n="_SignInButtonLabel_"></div>
+          <div class="white errorMessage" tabindex="4" ng-if="showErrors" focus-if="showErrors" >{{loginErrorMessage}}</div>
+          <div class="border"></div>
+          <br/>
+        </form>
+        <!-- login END -->
+        <!-- change password START -->
+        <form ng-if="loginMode === 'changePassword' && changePasswordConfirm != true" novalidate name="changePasswordForm">
+          <span class="h3 white" data-i18n="_HelloMessage_"></span>
+          <span class="h3 white">&nbsp;{{authenticatedUserName}},</span>
+          <div class="login-header enhanced" data-i18n="_CreateNewPassword_"></div>
+          <input type="password" tabindex="1" required ng-focus="clearChangePasswordErrorMessage()" class="inputField {{oldPasswordErrorClass}}"
+          data-i18n-attr="{{oldPasswordPlaceholder}}|placeholder" ng-model="changePasswordFormData.oldPassword">
+          <input type="password" tabindex="2" required ng-focus="clearChangePasswordErrorMessage()" class="inputField {{newPasswordErrorClass}}"
+          data-i18n-attr="{{newPasswordPlaceholder}}|placeholder" ng-model="changePasswordFormData.newPassword">
+          <input type="password" tabindex="3" required ng-focus="clearChangePasswordErrorMessage()" class="inputField {{confirmNewPasswordErrorClass}}"
+          data-i18n-attr="{{confirmNewPasswordPlaceholder}}|placeholder" ng-model="changePasswordFormData.confirmNewPassword">
+          <div class="white errorMessage" tabindex="4" ng-if="showErrors" focus-if="showErrors" data-i18n="{{changePasswordErrorMessage}}"></div>
+          <div class="button-transparent loginButton" tabindex="5" role="button" ng-click="changePassword(changePasswordFormData)"
+          data-i18n="_OkButtonLabel_"></div>
+          <div class="border"></div>
+          <div class="textLink" tabindex="6" role="button" ng-click="logoutUser()" data-i18n="_SignOutButtonLabel_"></div>
+        </form>
+        <div ng-if="changePasswordConfirm" class="login-header enhanced" data-i18n="_PasswordChangedHeader_"></div>
+        <span ng-if="changePasswordConfirm" class="glyphicon glyphicon-ok"></span>
+        <div ng-if="changePasswordConfirm" class="button-transparent loginButton" tabindex="1" role="button" ng-click="redirectToHome()"
+        data-i18n="_OkButtonLabel_"></div>
+        <!-- change password END -->
+      </div>
+    </div>
+  </div>
+</div>

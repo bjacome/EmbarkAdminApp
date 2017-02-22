@@ -1,0 +1,32 @@
+{
+	"data": {
+		"_id": 2,
+		"_rev": 1461512646564,
+		"name": "ROLE1",
+		"labels": {
+			"EN": "(EN) Role 1",
+			"FR": "(FR) Role 1"
+		},
+		"statuses": ["ACTIVE",
+		"CLOSED"],
+		"taskGroups": [{
+			"name": "TASKGROUP1",
+			"labels": {
+				"EN": "Task Group 1"
+			},
+			"tasks": [{
+				"name": "TASK1",
+				"labels": {
+					"EN": "Task 1"
+				}
+			},
+			{
+				"name": "TASK2",
+				"labels": {
+					"EN": "(EN) Task 2",
+					"FR": "(FR) Task 2"
+				}
+			}]
+		}]
+	}
+}

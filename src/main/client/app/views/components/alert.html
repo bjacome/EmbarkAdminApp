@@ -1,0 +1,8 @@
+<div class="alert  fade " ng-show="showAlert"
+ng-class="{
+  'alert-success':alertLevel === 0,
+  'alert-warning':alertLevel === 1,
+  'alert-danger':alertLevel === 2,in:showAlert }">
+  <a  class="close"  aria-label="close" ng-click="showAlert = false">&times;</a>
+  <strong>{{alertLevelLabel}}</strong> {{alertText}}
+</div>

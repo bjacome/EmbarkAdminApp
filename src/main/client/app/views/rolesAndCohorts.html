@@ -1,0 +1,65 @@
+
+<div class="container-fluid">
+  <div class="row">
+    <div ng-show="restReady" class="col-md-4 left-section">
+      <div class="line-bottom action-buttons-container clearfix">
+        <div class="action-buttons">
+            <ul class="action-button">
+              <li>
+                  <div class="button-custom" ng-show="hasRoles()" role="button" ng-click="collapseOrExpandAll('mainTree','Main')" data-i18n="{{collapseOrExpandButtonLabel}}"></div>
+              </li>
+              <li>
+                  <div class="button-custom" name="newRoleCohort" role="button" ng-click="newRole(roles)" data-i18n="{{newRoleButtonLabel}}"></div>
+              </li>
+            </ul>
+        </div>
+      </div>
+      <span class="pull-right" ng-if="!(roles.length > 0)" data-i18n="_NoTreeRoles_"></span>
+      <div ui-tree data-drag-enabled="false" class="tree-container roles-tree scrollable" ng-if="roles.length > 0">
+        <ol ui-tree-nodes ng-model="roles" id="mainTree">
+          <li ng-repeat="role in roles" ui-tree-node>
+            <div ui-tree-handle class="tree-node tree-node-content selectable" ng-click="setSelectedRole(role)" ng-class="{'selectedParent': role.$$hashKey.slice(role.$$hashKey.indexOf(':')+1) === selectedRoleID}">
+              <a class="btn btn-success btn-xs" ng-if="role.cohorts && role.cohorts.length > 0" data-nodrag ng-click="toggle(this)">
+                <span class="glyphicon"
+                      ng-class="{'glyphicon-chevron-right': collapsed,'glyphicon-chevron-down': !collapsed}">
+                </span>
+              </a>
+              {{role.name}}
+              <a class="pull-right btn btn-primary btn-xs" title="Remove Role" data-nodrag ng-click="removeMe(role,'role',$index)"  data-toggle="modal" data-target="#confirmModal">
+                <span class="glyphicon glyphicon-remove"></span>
+              </a>
+              <a class="pull-right btn btn-primary btn-xs" title="Add New Cohort" data-nodrag ng-click="newSubCohort(role)" style="margin-right: 8px;">
+                <span class="glyphicon glyphicon-plus"></span>
+              </a>
+              <a class="pull-right btn btn-primary btn-xs" data-nodrag title="Edit Role" ng-click="loadRole(role)" style="margin-right: 8px;">
+                <span class="glyphicon glyphicon-pencil"></span>
+              </a>
+            </div>
+            <ol ui-tree-nodes="" data-nodrag ng-model="role.cohorts" ng-class="{hidden: collapsed}">
+              <li ng-repeat="cohort in role.cohorts" ui-tree-node style="margin:15px;">
+                <div  ui-tree-handle ng-click="setSelectedCohort(role, cohort)" class="selectable" ng-class="{'selected': cohort.$$hashKey.slice(cohort.$$hashKey.indexOf(':')+1) === selectedCohortID}">
+                  {{cohort.name}}
+                  <a class="pull-right btn btn-primary btn-xs" title="Remove Cohort" data-nodrag ng-click="removeMe(cohort,'cohort',$index)" data-toggle="modal" data-target="#confirmModal">
+                    <span class="glyphicon glyphicon-remove"></span>
+                  </a>
+                  <a class="pull-right btn btn-primary btn-xs" title="Edit Cohort" data-nodrag ng-click="loadCohort(cohort)" style="margin-right: 8px;">
+                    <span class="glyphicon glyphicon-pencil"></span>
+                  </a>
+                </div>
+              </li>
+            </ol>
+          </li>
+        </ol>
+      </div>
+    </div>
+
+    <div class="col-md-8" >
+      <!-- right side -->
+      <div ng-include="" src="'views/components/newRoleForm.html'"></div>
+      <div ng-include="" src="'views/components/newCohortForm.html'"></div>
+      <div ng-include="" src="'views/components/newTaskGroupForm.html'"></div>
+      <div ng-include="" src="'views/components/newTaskForm.html'"></div>
+    </div>
+  </div>
+  <confirm on-confirm="confirmedDelete()" on-cancel="cancelDelete()"><div>{{modalFormLabel}}</div></confirm>
+</div>

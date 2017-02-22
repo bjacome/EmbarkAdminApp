@@ -1,0 +1,63 @@
+<!--New Task Form-->
+<div class="modal fade" id="taskModal" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <form class="form-horizontal" name="forms.newTaskForm" role="form" ng-submit="saveTask(forms.newTaskForm)" novalidate>
+        <div class="modal-header action-buttons-container">
+          <div class="title">
+            <h3>{{modalFormLabel}}</h3>
+          </div>
+          <div class="action-buttons">
+            <ul class="action-button ">
+              <li>
+                <button type="submit" class="button-custom" data-i18n="_SaveButton_"></button>
+              </li>
+              <li>
+                <button type="button" class="button-custom" data-dismiss="modal" data-i18n="_CloseButton_"></button>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="modal-body">
+            <div class="form-group">
+              <label for="taskName" class="form-control-label col-sm-3" data-i18n="_TaskGroupNameLabel_"></label>
+              <div class="col-sm-9">
+                <input type="text" class="form-control" name="taskName" ng-model="taskNameValue.value" required>
+              </div>
+            </div>
+
+            <div class="form-group" ng-if="mode === COHORT">
+              <label class="form-control-label col-sm-3" for="dueDate" data-i18n="_TaskDueDateLabel_"></label>
+              <div class="col-sm-9">
+                <div class="input-group date">
+                    <input type="text" placeholder="YYYY-MM-DD" class="form-control bg-white" name="dueDate" id="dueDate" ng-model="dueDate" data-date-time-picker readonly/>
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                </div>
+              </div>
+            </div>
+
+            <!--
+            <div class="form-group row">
+              <label for="taskDueDate"  class="form-control-label col-sm-3" data-i18n="_TaskDueDateLabel_"></label>
+              <div class="col-sm-9">
+                <input type="date" class="form-control" id="taskDueDate" ng-model="dueDate.value">
+              </div>
+            </div> -->
+
+            <div class="taskGroupLabelsContainer">
+              <div class="row taskGroupLabelsContainerHeader">
+                <p class= "gridTitle col-md-4" data-i18n="_TaskGroupLabelsGridTitle_"></p>
+                <div class="col-md-8">
+                  <button type="button" class="button-custom-sm" ng-click="addRow('taskGroupLabelsGrid')" data-i18n="_AddTaskGroupLabelButton_"></button>
+                </div>
+              </div>
+              <div id="taskGroupLabelsGrid" ui-grid="taskGroupLabelsGridOptions" ng-style="GridAdjust('taskGroupLabelsGridOptions','taskGroupLabelsGrid')" ui-grid-edit ui-grid-auto-resize ui-grid-cellNav class="grid"></div>
+            </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

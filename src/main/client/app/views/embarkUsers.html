@@ -1,0 +1,379 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-3 left-section">
+      <div class="line-bottom action-buttons-container clearfix">
+        <div class="title">
+          <h3 data-i18n="_RolesAndCohortsTitle_"></h3>
+        </div>
+        <div class="action-buttons button-pos-low">
+          <ul class="action-button">
+            <li>
+                <div  class="button-custom-sm" role="button" ng-click="collapseOrExpandAll('EmainTree','Main')" data-i18n="{{collapseOrExpandButtonLabel}}"></div>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div ui-tree data-drag-enabled="false" class="tree-container roles-tree scrollable" show-on-load>
+        <ol ui-tree-nodes ng-model="roles" id="EmainTree">
+          <li ng-repeat="role in roles" ui-tree-node>
+            <div ui-tree-handle class="tree-node tree-node-content selectable" ng-click="setSelectedRole(role)" ng-class="{'selectedParent': role.$$hashKey.slice(role.$$hashKey.indexOf(':')+1) === selectedRoleID, 'padd-custom': !(role.cohorts && role.cohorts.length > 0)}">
+              <a class="btn btn-success btn-xs" ng-if="role.cohorts && role.cohorts.length > 0" data-nodrag ng-click="toggle(this)">
+                <span class="glyphicon"
+                      ng-class="{'glyphicon-chevron-right': collapsed,'glyphicon-chevron-down': !collapsed}">
+                </span>
+              </a>
+              {{role.name}}
+            </div>
+            <ol ui-tree-nodes="" ng-model="role.cohorts" ng-class="{hidden: collapsed}">
+              <li ng-repeat="cohort in role.cohorts" ui-tree-node style="margin:15px;">
+                <div ui-tree-handle ng-click="setSelectedCohort(role, cohort)" class="selectable" ng-class="{'selected': cohort.$$hashKey.slice(cohort.$$hashKey.indexOf(':')+1) === selectedCohortID}">
+                  {{cohort.name}}
+                </div>
+              </li>
+            </ol>
+          </li>
+        </ol>
+      </div>
+    </div>
+    <!-- Mid-Section-->
+    <div class="col-md-4 left-section">
+      <div class="action-buttons-container clearfix">
+        <form class="form-horizontal" role="form">
+        <label class="title col-sm-2" for="environmentName">
+          <h3 data-i18n="_EnvironmentDropDownLabel_"></h3>
+        </label>
+        <div class="col-sm-10" show-on-load>
+          <select class="form-custom-control"
+          ng-options="env as env.name for env in environments track by env._id" ng-model="environmentName" ng-change="environmentChanged()"
+          id="environmentName" ng-disabled="cohortNotSelected"></select>
+        </div>
+        </form>
+      </div>
+      <div class="line-bottom action-buttons-container clearfix">
+        <div class="action-buttons">
+          <ul class="action-button">
+            <li>
+                <div  class="button-custom-sm" role="button" ng-click="importModalCheck()" data-i18n="_ImportButton_"></div>
+            </li>
+            <li>
+                <div  class="button-custom-sm" role="button" ng-click="exportUser()" data-i18n="_ExportButton_"></div>
+            </li>
+            <li>
+                <div  class="button-custom-sm" role="button" ng-click="showNewUserForm()" data-i18n="_NewButton_"></div>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-12">
+          <span ng-if="!(embarkUsersGridOptions.data.length>0) && !userGridloading" data-i18n="{{gridLabel}}"></span>
+          <div ng-show="(embarkUsersGridOptions.data.length>0)" id="embarkUsersGrid" ng-if="embarkUsersGridOptions.data.length>=0" ui-grid="embarkUsersGridOptions" ng-style="GridAdjust('embarkUsersGridOptions','embarkUsersGrid')" ui-grid-edit ui-grid-auto-resize ui-grid-selection class="grid main-data-grid"></div>
+        </div>
+      </div>
+    </div>
+    <!-- right side -->
+    <div class="col-md-5" >
+      <span ng-if="formLabel === '_NewUserTitle_' || formLabel === '_EditUserTitle_'">
+      <div class="line-bottom action-buttons-container clearfix">
+        <div class="title">
+          <h3 data-i18n="{{formLabel}}"></h3>
+        </div>
+        <div class="action-buttons  ">
+          <ul class="action-button ">
+            <li>
+                <div  class="button-custom" role="button" ng-click="saveUser(forms.newUserForm)" data-i18n="_SaveButton_"></div>
+            </li>
+            <li>
+                <div  class="button-custom" role="button" ng-click="cancelUser()" data-i18n="_CancelButton_"></div>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <!-- <div class="col-md-6"> (uncomment if page to be divided into 4 sections)-->
+        <div class="scrollable">
+          <div class="row">
+            <form name="forms.newUserForm" class="form-horizontal col-md-10" role="form" novalidate>
+              <div class="form-group">
+                <label class="control-label col-sm-4 left-indent" for="email" data-i18n="_EmailInput_"></label>
+                <div class="col-sm-7">
+                  <input class="form-control" ng-model="email" name="email" id="email" required>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="control-label col-sm-4 left-indent" for="firstName" data-i18n="_FirstNameInput_"></label>
+                <div class="col-sm-7">
+                  <input class="form-control" ng-model="firstName" name="firstName" id="firstName" required>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="control-label col-sm-4 left-indent" for="lastName" data-i18n="_LastNameInput_"></label>
+                <div class="col-sm-7">
+                  <input class="form-control" ng-model="lastName" name="lastName" id="lastName" required>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="control-label col-sm-4 left-indent" for="startDate" data-i18n="_StartDateInput_"></label>
+                <div class="col-sm-7">
+                  <div class="input-group date">
+                      <input type="text" placeholder="YYYY-MM-DD" class="form-control bg-white" name="startDate" id="startDate" ng-model="startDate" data-date-time-picker readonly required/>
+                      <span class="input-group-addon">
+                          <span class="glyphicon glyphicon-calendar"></span>
+                      </span>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="control-label col-sm-4 left-indent" for="disableDate" data-i18n="_DisableDateInput_"></label>
+                <div class="col-sm-7">
+                  <div class="input-group date">
+                      <input type="text" placeholder="YYYY-MM-DD" class="form-control bg-white" name="disableDate" id="disableDate" ng-model="disableDate" data-date-time-picker readonly/>
+                      <span class="input-group-addon">
+                          <span class="glyphicon glyphicon-calendar"></span>
+                      </span>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="control-label col-sm-4 left-indent" for="userLocation" data-i18n="_LocationLabel_"></label>
+                <div class="col-sm-7">
+                  <input class="form-control" ng-model="location" name="userLocation" id="userLocation">
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="control-label col-sm-4 left-indent" for="userPassword" data-i18n="_PasswordInput_"></label>
+                <div class="col-sm-7">
+                  <input class="form-control" ng-model="password" id="userPassword" name="userPassword" required>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="control-label col-sm-4 left-indent" for="offerStatus" data-i18n="_OfferStatusInput_"></label>
+                <div class="col-sm-7">
+                  <select name="offerStatus" class="offerStatusForm" ng-options="status for status in statuses" ng-model="offerStatus" id="offerStatus"></select>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="control-label col-sm-4 left-indent" data-i18n="_LastLoginLabel_"></label>
+                <div class="col-sm-7">
+                  <p class="form-control-static">{{lastLogin}}</p>
+                </div>
+              </div>
+              <div class="line-bottom action-buttons-container clearfix">
+                <div class="action-buttons">
+                  <ul class="action-button">
+                    <li>
+                        <div  class="button-custom-sm" role="button" ng-click="addTitleRow()" data-i18n="_AddTitleButton_"></div>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-sm-12">
+                  <span ng-if="!(roleTitlesGridOptions.data.length>0)" data-i18n="_NoUserRoleTitleRows_"></span>
+                  <div id="roleTitlesGrid" ng-if="roleTitlesGridOptions.data.length>=0" ui-grid="roleTitlesGridOptions" ng-style="GridAdjust('roleTitlesGridOptions','roleTitlesGrid')" ui-grid-edit ui-grid-auto-resize ui-grid-cellNav class="grid"></div>
+                </div>
+              </div>
+            <!-- </div> (uncomment and start changing from here if page to be divided into 4 sections)-->
+              <div class="line-bottom action-buttons-container clearfix alignTop">
+                  <label class="paddDown" data-i18n="_ChecklistTreeTitle_"></label>
+                <div class="action-buttons">
+                  <ul class="action-button">
+                    <li>
+                      <div class="button-custom-sm" role="button" ng-if="haveChilds()" ng-click="collapseOrExpandAll('ECohortsTree','Cohort')" data-i18n="{{collapseOrExpandCButtonLabel}}"></div>
+                    </li>
+                    <li>
+                        <div  class="button-custom-sm" role="button" data-toggle="modal" data-target="#taskGroupModal" ng-click="newTaskGroup()" data-i18n="_AddGroupButton_"></div>
+                    </li>
+
+                  </ul>
+                </div>
+              </div>
+              <span ng-if="!(cohortGroups.length > 0)" data-i18n="_NoCohortTreeGroups_"></span>
+
+              <div ui-tree data-drag-enabled="false" class="tree-container roles-tree alignDown" ng-if="cohortGroups.length > 0">
+                <ol ui-tree-nodes ng-model="cohortGroups" id="ECohortsTree">
+                  <li ng-repeat="group in cohortGroups" ui-tree-node>
+                    <div ui-tree-handle class="tree-node tree-node-content" ng-class="{'padd-custom': !(group.taskList && group.taskList.length > 0)}">
+                      <a class="btn btn-success btn-xs" ng-if="group.taskList && group.taskList.length > 0" data-nodrag ng-click="toggle(this)">
+                        <span class="glyphicon" ng-class="{'glyphicon-chevron-right': collapsed,'glyphicon-chevron-down': !collapsed}"></span>
+                      </a>
+                      {{group.key}}
+                      <a class="pull-right btn btn-primary btn-xs" data-show="tip" data-placement="auto left" title="Remove Task Group" data-nodrag ng-click="remove(this) ; haveChilds()">
+                        <span class="glyphicon glyphicon-remove"></span>
+                      </a>
+                      <a class="pull-right btn btn-primary btn-xs" data-show="tip" data-placement="auto left" title="Add New Task" data-nodrag data-toggle="modal" data-target="#taskModal" ng-click="newTask(group)" style="margin-right: 8px;">
+                        <span class="glyphicon glyphicon-plus"></span>
+                      </a>
+                      <a class="pull-right btn btn-primary btn-xs" data-show="tip" data-placement="auto left" title="Edit Task Group" data-nodrag data-toggle="modal" data-target="#taskGroupModal" ng-click="loadTaskGroup(group)" style="margin-right: 8px;">
+                        <span class="glyphicon glyphicon-pencil"></span>
+                      </a>
+                    </div>
+                    <ol ui-tree-nodes="" ng-model="group.taskList" ng-class="{hidden: collapsed}">
+                      <li ng-repeat="task in group.taskList" ui-tree-node style="margin:15px;">
+                        <div ui-tree-handle>
+                          {{task.key}}
+                          <a class="pull-right btn btn-primary btn-xs" data-show="tip" data-placement="auto left" title="Remove Task" data-nodrag ng-click="remove(this) ; haveChilds()">
+                            <span class="glyphicon glyphicon-remove"></span>
+                          </a>
+                          <a class="pull-right btn btn-primary btn-xs" data-show="tip" data-placement="auto left" title="Edit Task" data-nodrag data-toggle="modal" data-target="#taskModal" ng-click="loadTask(task, group)" style="margin-right: 8px;">
+                            <span class="glyphicon glyphicon-pencil"></span>
+                          </a>
+                        </div>
+                      </li>
+                    </ol>
+                  </li>
+                </ol>
+              </div>
+            </form>
+          </div>
+        </div>
+      </span>
+    </div>
+  </div>
+
+
+  <!-- Import Modal -->
+  <div class="modal fade" id="importModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <form name="fileForm" class="form-horizontal" role="form" novalidate>
+          <div class="modal-header action-buttons-container">
+            <div class="title">
+              <h3 data-i18n="_ImportUsersHeader_"></h3>
+            </div>
+            <div class="action-buttons">
+              <ul class="action-button ">
+                <li>
+                  <button type="button" class="button-custom" data-dismiss="modal" ng-click="importUser(fileForm)" data-i18n="_ImportButton_"></button>
+                </li>
+                <li>
+                  <button type="button" class="button-custom" data-dismiss="modal" data-i18n="_CancelButton_"></button>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div class="modal-body">
+              <div class="form-group">
+                <label class="form-control-label col-sm-3" data-i18n="_RoleLabel_"></label>
+                <div class="col-sm-9" >
+                  <p class="form-control-static">{{userSelectedRole.name}}</p>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="form-control-label col-sm-3" data-i18n="_CohortLabel_"></label>
+                <div class="col-sm-9" >
+                  <p class="form-control-static">{{userSelectedCohort.name}}</p>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="fileImported"  class="form-control-label col-sm-3" data-i18n="_SelectCSVLabel_"></label>
+                <div class="col-sm-9">
+                  <input type="file" id="fileImported" file-model="importFile" accept=".csv">
+                </div>
+              </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!--New Task Form-->
+  <div class="modal fade" id="taskModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <form name="forms.taskForm" class="form-horizontal" role="form" novalidate>
+          <div class="modal-header action-buttons-container">
+            <div class="title">
+              <h3>{{modalFormLabel}}</h3>
+            </div>
+            <div class="action-buttons">
+              <ul class="action-button ">
+                <li>
+                  <button type="submit" class="button-custom" ng-click="saveTask(forms.taskForm)" data-i18n="_SaveButton_"></button>
+                </li>
+                <li>
+                  <button type="button" class="button-custom" data-dismiss="modal" data-i18n="_CloseButton_"></button>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="modal-body">
+              <div class="form-group">
+                <label for="taskName" class="form-control-label col-sm-3" data-i18n="_TaskGroupNameLabel_"></label>
+                <div class="col-sm-9">
+                  <input type="text" class="form-control" id="taskName" ng-model="taskName" name="taskName" required>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="dueDate"  class="form-control-label col-sm-3 left-indent" data-i18n="_TaskDueDateLabel_"></label>
+                <div class="col-sm-9">
+                  <div class="input-group date">
+                    <input type="text" placeholder="YYYY-MM-DD" class="form-control bg-white" name="dueDate" id="dueDate" ng-model="dueDate" data-date-time-picker readonly required/>
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="taskGroupLabelsContainer">
+                <div class="row taskGroupLabelsContainerHeader">
+                  <p class= "gridTitle col-md-4" data-i18n="_TaskGroupLabelsGridTitle_"></p>
+                  <div class="col-md-8">
+                    <button type="button" class="button-custom-sm" ng-click="addTaskRow()" data-i18n="_AddTaskGroupLabelButton_"></button>
+                  </div>
+                </div>
+                <div id="taskGroupLabelsGrid" ui-grid="taskGroupLabelsGridOptions" ng-style="GridAdjust('taskGroupLabelsGridOptions','taskGroupLabelsGrid')" ui-grid-edit ui-grid-auto-resize ui-grid-cellNav class="grid"></div>
+              </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!--New Task Group Form-->
+  <div class="modal fade" id="taskGroupModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <form name="forms.taskGroupForm" class="form-horizontal" role="form" novalidate>
+          <div class="modal-header action-buttons-container">
+            <div class="title">
+              <h3>{{modalFormLabel}}</h3>
+            </div>
+            <div class="action-buttons">
+              <ul class="action-button">
+                <li>
+                  <button type="submit" class="button-custom" ng-click="saveTaskGroup(forms.taskGroupForm)" data-i18n="_SaveButton_"></button>
+                </li>
+                <li>
+                  <button type="button" class="button-custom" data-dismiss="modal" data-i18n="_CloseButton_"></button>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="modal-body">
+            <div class="form-group">
+              <label for="taskGroupName" class="form-control-label col-sm-3" data-i18n="_TaskGroupGroupNameLabel_"></label>
+              <div class="col-sm-9">
+                <input type="text" class="form-control" id="taskGroupName" ng-model="taskGroupName" name="taskGroupName" required>
+              </div>
+            </div>
+
+            <div class="taskGroupGroupLabelsContainer">
+              <div class="row taskGroupGroupLabelsContainerHeader">
+                <p class= "gridTitle col-md-4" data-i18n="_TaskGroupGroupLabelsGridTitle_"></p>
+                <div class="col-md-8">
+                  <button type="button" class="button-custom-sm" ng-click="addTaskGroupRow()" data-i18n="_AddTaskGroupGroupLabelButton_"></button>
+                </div>
+              </div>
+              <div id="taskGroupGroupLabelsGrid" ui-grid="taskGroupGroupLabelsGridOptions" ng-style="GridAdjust('taskGroupGroupLabelsGridOptions','taskGroupGroupLabelsGrid')" ui-grid-edit ui-grid-auto-resize ui-grid-cellNav class="grid"></div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <confirm on-confirm="Delete()" on-cancel="cancelDelete()"><div data-i18n="_EmbarkUserDeleteModalLabel_"></div></confirm>
+</div>

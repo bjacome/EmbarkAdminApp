@@ -1,0 +1,34 @@
+
+//Grayscale
+$white:         #FFFFFF;
+$grey-light:    #E8EAED;
+$grey:          #BCBDBD;
+$grey-med:      #909294;
+$grey-dark:     #696C6F;
+$grey-darker:   #44474B;
+
+//Primary Colours
+$yellow:         #FEDF01;
+$blue-light:     #98C6EA;
+$blue-purple:    #6A8DC4;
+$blue:           #0073CF;
+$blue-dark:      #193D94;
+$blue-darker:    #002144;
+
+.white          {  color: $white;       }
+.grey-light     {  color: $grey-light;  }
+.grey           {  color: $grey;        }
+.grey-med       {  color: $grey-med;    }
+.grey-dark      {  color: $grey-dark;   }
+.grey-darker    {  color: $grey-darker; }
+
+.blue-light  	{  color: $blue-light;     }
+.blue        	{  color: $blue;          }
+.blue-dark   	{  color: $blue-dark;     }
+.blue-darker 	{  color: $blue-darker;   }
+.yellow      	{  color: $yellow;        }
+
+.background-grey-light  { background-color: $grey-light; }
+.background-white       { background-color: $white; }
+.background-blue-darker { background-color: $blue-darker; }
+.text-shadowed          { text-shadow: 0px 1px 2px rgba(0,0,0,0.5); }

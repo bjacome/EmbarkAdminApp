@@ -1,0 +1,105 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-5 left-section">
+      <div class="line-bottom action-buttons-container clearfix">
+        <div class="action-buttons">
+          <ul class="action-button">
+            <li>
+                <div  class="button-custom" role="button" ng-click="showNewEnvironmentForm(forms.newEnvironmentForm,forms.credentialsForm)" data-i18n="_NewEnvironmentLabel_"></div>
+            </li>
+            <!-- <li ng-if="embarkEnvironmentsGridOptions.data.length>0">
+                <div  class="button-custom" role="button" ng-click="removeSelectedEnvironments()" data-i18n="_RemoveEnvironmentsButton_"></div>
+            </li> -->
+          </ul>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-12">
+          <span ng-if="!(embarkEnvironmentsGridOptions.data.length>0) && !loading" data-i18n="_NoEnvironmentRows_"></span>
+          <div id="embarkEnvironmentsGrid" ng-if="embarkEnvironmentsGridOptions.data.length>=0" ui-grid="embarkEnvironmentsGridOptions" ng-style="GridAdjust('embarkEnvironmentsGridOptions','embarkEnvironmentsGrid')" ui-grid-edit ui-grid-auto-resize ui-grid-selection class="grid main-data-grid"></div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-7" >
+      <!-- right side -->
+      <span ng-if="formLabel === '_NewEnvironmentTitle_' || formLabel === '_EditEnvironment_'">
+      <div class="line-bottom action-buttons-container clearfix">
+        <div class="title">
+          <h3 data-i18n="{{formLabel}}"></h3>
+        </div>
+        <div class="action-buttons  ">
+          <ul class="action-button ">
+            <li>
+                <div  class="button-custom" role="button" ng-click="saveEnvironment(forms.newEnvironmentForm,forms.credentialsForm)" data-i18n="_SaveButton_"></div>
+            </li>
+            <li>
+                <div  class="button-custom" role="button" ng-click="closeEnvironment()" data-i18n="_CloseButton_"></div>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <!--Add New Environment Form-->
+      <div class="row">
+        <form name="forms.newEnvironmentForm" class="form-horizontal col-md-12" role="form" novalidate>
+          <div class="form-group">
+            <label class="control-label col-sm-2 left-indent" for="environmentName" data-i18n="_EnvironmentNameLabel_"></label>
+            <div class="col-sm-9 col-sm-offset-1">
+              <input class="form-control" ng-model="environmentName" name="environmentName" id="environmentName" required>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="control-label col-sm-2 left-indent" for="environmentLocation" data-i18n="_EnvironmentLocationLabel_"></label>
+            <div class="col-sm-9 col-sm-offset-1">
+              <input class="form-control" ng-model="environmentLocation" name="environmentLocation" id="environmentLocation" required>
+            </div>
+          </div>
+        </form>
+      </div>
+      <!-- Credentials Section -->
+      <div class="line-bottom action-buttons-container clearfix">
+        <div class="title">
+          <h3 data-i18n="_CredentialsTitle_"></h3>
+        </div>
+      </div>
+      <div class="row">
+        <form name="forms.credentialsForm" class="form-horizontal col-md-12" role="form" novalidate>
+          <div class="form-group">
+            <label class="control-label col-sm-2 left-indent" for="username" data-i18n="_UserNameLabel_"></label>
+            <div class="col-sm-9 col-sm-offset-1">
+              <input class="form-control" ng-model="username" name="username" id="username" required>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="control-label col-sm-2 left-indent" for="password" data-i18n="_PasswordLabel_"></label>
+            <div class="col-sm-9 col-sm-offset-1">
+              <input class="form-control" ng-model="password" name="password" id="password" required>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="control-label col-sm-2 left-indent" for="hostName" data-i18n="_HostNameLabel_"></label>
+            <div class="col-sm-9 col-sm-offset-1">
+              <input class="form-control" ng-model="hostName" name="hostName" id="hostName" required>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="control-label col-sm-2 left-indent" for="port" data-i18n="_PortLabel_"></label>
+            <div class="col-sm-3 col-sm-offset-1">
+              <input type="number" class="form-control" ng-model="port" name="port" id="port" required>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="control-label col-sm-2 left-indent" for="environmentURL" data-i18n="_URLLabel_"></label>
+            <div class="col-sm-9 col-sm-offset-1">
+              <input type="url" class="form-control" ng-model="environmentURL" name="environmentURL" id="environmentURL" required>
+            </div>
+          </div>
+        </form>
+      </div>
+      </span>
+    </div>
+  </div>
+  <!-- Delete popup screen -->
+  <confirm on-confirm="confirmedDelete()" on-cancel="cancelDelete()"><div data-i18n="_EnvironmentDeleteModalLabel_"></div></confirm>
+  <!-- end popup screen -->
+</div>

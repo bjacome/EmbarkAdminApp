@@ -1,0 +1,190 @@
+/*
+    Created on : Dec 10, 2015, 9:29:20 PM
+    Author     : radub
+*/
+
+@import "colours.scss";
+
+/* GENERAL MENU LAYOUT STYLES ************************************************/
+menu {
+  padding: 0px;
+  margin: 0px;
+  .main-menu {
+      z-index: 500;
+      width: 100%;
+      transition: all 0.3s ease 0s;
+
+      .main-menu-header{
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+
+          .header-left .menu-toggle{
+              padding: 8px;
+              display: block;
+          }
+
+          .header-right{
+              .header-menu{
+                  list-style: outside none none;
+                  margin: 0px;
+                  padding: 0px;
+
+                  > li { float: left; }
+
+                  li > a,
+                  li > div.textLink {
+                      padding: 16px;
+                      display: block;
+                  }
+
+                  .dropdown-menu{
+                      border: 0px none;
+                      border-radius: 0px;
+                      padding: 8px 0px;
+                      margin-top: 0px;
+
+                      > li > a{
+                          padding: 8px 16px;
+                          text-shadow: none;
+                      }
+                  }
+
+                  .dropdown.open{
+                      > a{
+                          background-color: $white;
+                          color: $grey-darker;
+                          text-shadow: none;
+                          text-decoration: none;
+                      }
+                  }
+
+                  .button-transparent{
+                      padding: 8px 16px;
+                      margin-top: 7px; // because of the 1px border, otherwise 8px
+                      margin-left: 8px;
+                  }
+
+                  .button-custom{
+                      margin-top: 8px;
+                      margin-left: 8px;
+                  }
+              }
+
+          }
+
+      } // end header menu
+
+      .main-menu-nav{
+          display: flex;
+          justify-content: space-between;
+          padding: 0px 48px;
+
+          li {
+              list-style: outside none none;
+              display: flex;
+              align-items: center;
+          }
+
+          a{
+              display: block;
+              text-align: center;
+              font-size: 12px;
+              font-weight: 500;
+          }
+      }
+  } // end all main-menu
+
+  /*  MENU COLOR CHANGES *************************************************/
+
+  .password-modal {
+    width: 400px;
+  }
+
+  .main-menu-opaque{
+      background-color: $white;
+      color: $grey-dark;
+      text-shadow: none;
+      box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.15);
+
+      .main-menu-header{
+          transition: all 0.5s ease 0s;
+          padding: 8px 64px 0px;
+
+          .header-left .header-brand object{
+              width: auto;
+              height: 54px;
+          }
+      }
+
+      .main-menu-nav{
+          a{
+              padding: 8px 16px;
+          }
+      }
+
+      a {
+          color: $grey-dark;
+      }
+
+      a:hover {
+          color: $blue-dark;
+          text-decoration: none;
+          cursor: pointer;
+      }
+
+      .main-menu-nav{
+          border-top: 1px solid $grey-light;
+          border-bottom: 1px solid $grey-light;
+      }
+  }
+
+  /**** PAGE HEADER ***************************/
+
+  .page-header{
+    padding: 0px;
+    margin: 0px;
+    border-bottom: 1px solid $grey-darker;
+    h1{
+      margin-left: 10px;
+    }
+  }
+
+  /* SCREEN SUPPORT *******************************************************/
+  @media screen and (min-width : 769px) and (max-width: 1040px) {
+      .main-menu{
+          .main-menu-header{
+              padding: 8px 32px 0px;
+
+              .header-left .header-brand object{
+                  width: auto;
+                  height: 54px;
+              }
+          }
+          .main-menu-nav{
+              padding: 0px 24px;
+          }
+      }
+  }
+
+  @media screen and (max-width: 991px) {
+      .main-menu{
+          .button-custom{
+              margin-top: -8px !important;
+          }
+      }
+  }
+
+  @media screen and (max-width: 768px) {
+      .main-menu{
+          .main-menu-header{
+              padding: 8px 16px 0px;
+
+              .header-left .header-brand object{
+                  width: auto;
+                  height: 54px;
+              }
+          }
+      }
+  }
+}

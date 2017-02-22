@@ -1,0 +1,106 @@
+@import "colours.scss";
+
+.clearfix:before,
+.clearfix:after {
+  content: " ";
+  display: table;
+}
+
+.clearfix:after {
+  clear: both;
+}
+.button-custom-sm {
+      border: 0px none;
+      border-radius: 3px;
+      font-size: 12px;
+      font-weight: bold;
+      @extend .white;
+      letter-spacing: 0.025em;
+      padding: 8px 10px;
+      text-decoration: none;
+      cursor: pointer;
+      background-color: $blue-dark;
+      transition: all 0.25s ease-out;
+      float: right !important;
+      margin-left: 5px;
+
+      &:hover {
+          background-color: $blue;
+          color: $white;
+      }
+}
+
+.button-pos-low {
+  position:relative;
+  top:14px;
+}
+.form-custom-control {
+  display: block;
+  width: auto;
+  height: 34px;
+  padding: 6px 12px;
+  font-size: 14px;
+  line-height: 1.428571429;
+  color: #555555;
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+  transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
+  position: relative;
+  top: 15px;
+}
+.offerStatusForm {
+  display: block;
+  width: 100%;
+  height: 34px;
+  padding: 6px 12px;
+  font-size: 14px;
+  line-height: 1.428571429;
+  color: #555555;
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+  transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
+}
+.scrollable {
+  overflow-y: auto;
+  overflow-x: hidden;
+  height: 570px;
+}
+.alignTop {
+  position: relative;
+  top: 10px;
+}
+.alignDown {
+  position: relative;
+  padding-top: 14px;
+}
+.paddDown {
+  padding-top: 8px;
+}
+.selectable {
+  &:hover {
+    border: 1px solid $blue-dark;
+    border-radius: 4px;
+    padding-left: 5px;
+    padding-top: 3px;
+  }
+}
+.selected {
+  background-color: $blue-dark;
+  color: $white;
+  border: 1px solid $blue-dark;
+  border-radius: 4px;
+  padding-left: 5px;
+  padding-top: 3px;
+}
+.selectedParent {
+  background-color: transparent;
+  border: 1px solid $blue-dark;
+  border-radius: 4px;
+  padding-left: 5px;
+  padding-top: 3px;
+}
+.padd-custom {
+  padding-left: 28px !important;
+  padding-bottom: 2px !important;
+}
+.bg-white {
+  background-color: $white !important;
+}

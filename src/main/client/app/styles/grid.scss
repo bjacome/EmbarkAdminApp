@@ -1,0 +1,44 @@
+@import "colours.scss";
+
+
+.grid {
+  height: auto;
+  margin-bottom: 10px;
+}
+
+.grid-lang {
+  width:45px;
+}
+
+.popupgrid {
+  height: 80%;
+  width: 100%;
+  margin-bottom: 10px;
+  .ui-grid-cell {
+    cursor: pointer !important;
+  }
+}
+
+
+.main-data-grid {
+  .ui-grid-viewport {
+    overflow-y: scroll;
+    overflow-x: auto !important;
+    max-height: 400px;
+    height: auto !important;
+  }
+
+  .ui-grid-cell {
+    cursor: pointer !important;
+  }
+}
+
+.ui-grid-render-container::-webkit-scrollbar,
+#roleTitlesGrid::-webkit-scrollbar {
+  width: 0 !important;
+}
+
+.ui-grid-render-container,
+#roleTitlesGrid {
+  -ms-overflow-style: none;
+}

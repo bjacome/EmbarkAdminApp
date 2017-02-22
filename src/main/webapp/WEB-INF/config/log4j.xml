@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE log4j:configuration SYSTEM "../dtd/log4j.dtd">
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
+
+	<appender name="MainLog" class="org.apache.log4j.FileAppender">
+		<param name="File" value="${webapp.root}/WEB-INF/log/emad.log"/>
+		<param name="Append" value="false"/>
+		<!-- Rollover at midnight each day -->
+            <!--param name="DatePattern" value="'.'yyyy-MM-dd-HH-mm"/-->
+
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="[%-5p][%d] - [%m]%n"/>
+		</layout>
+	</appender>
+	<!--
+    The console appender dictates what information is echoed to the
+    screen or console window.
+  -->
+	<appender name="console" class="org.apache.log4j.ConsoleAppender">
+		<param name="Target" value="System.out"/>
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="[%-5p][%m]%n"/>
+		</layout>
+	</appender>
+	<category name="net.sf.ehcache">
+		<priority value="info"/>
+		<appender-ref ref="MainLog"/>
+	</category>
+	<category name="org.springframework">
+		<priority value="info"/>
+		<appender-ref ref="MainLog"/>
+	</category>
+	
+	<category name="com.rbc">
+		<priority value="debug" />
+		<appender-ref ref="MainLog"/>
+	</category>
+	
+	<category name="net.objectof.sql">
+		<priority value="debug" />
+		<appender-ref ref="MainLog"/>
+	</category>
+</log4j:configuration>

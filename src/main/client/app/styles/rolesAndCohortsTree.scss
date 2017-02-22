@@ -1,0 +1,27 @@
+@import "colours.scss";
+
+.roles-tree {
+  clear: both;
+  .btn-success {
+    color: black;
+    background-color: transparent;
+    border-color: transparent;
+    &:hover {
+        color: black;
+        background-color: transparent;
+        border-color: transparent;
+    }
+  }
+
+  .btn-primary {
+    @extend .white;
+    background-color: $blue-dark;
+    border: 0px none;
+    border-radius: 3px;
+
+    &:hover {
+      background-color: $blue;
+      color: $white;
+    }
+  }
+}

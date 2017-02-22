@@ -1,0 +1,10 @@
+applications:
+- path: target/rbcEmbarkAdminApp.war
+  memory: 512M
+  instances: 1
+  domain: mybluemix.net
+  name: TestEmbarkAdmin
+  host: testembarkadmin
+  disk_quota: 1024M
+  services:
+  - ClearDB MySQL Database-gk

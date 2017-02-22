@@ -1,0 +1,122 @@
+<div class="container-fluid">
+  <div class="row">
+  <div class="col-md-4 left-section">
+
+      <div class="line-bottom action-buttons-container clearfix">
+        <div class="action-buttons">
+            <ul class="action-button">
+              <li>
+                  <div  class="button-custom" role="button" ng-click="addAdminUser()" data-i18n="_NewButton_"></div>
+              </li>
+            </ul>
+        </div>
+      </div>
+      <span ng-if="!(adminUsersGrid.data.length>0) && !loading" data-i18n="_NoAdminUsersRows_"></span>
+      <div class="row">
+        <div class="col-sm-12">
+          <div id="adminUsers" ui-grid="adminUsersGrid" ng-if="adminUsersGrid.data.length>0" ng-style="GridAdjust('adminUsersGrid','adminUsers')" ui-grid-selection ui-grid-auto-resize class="grid main-data-grid"></div>
+        </div>
+      </div>
+
+  </div>
+
+  <div class="col-md-8">
+    <span ng-if="formLabel === '_NewAdminUserTitle_' || formLabel === '_EditAdminUserTitle_'">
+    <div class="line-bottom action-buttons-container clearfix">
+      <div class="title">
+        <h3 data-i18n="{{formLabel}}"></h3>
+      </div>
+      <div class="action-buttons">
+        <ul class="action-button">
+          <li>
+              <div  class="button-custom" role="button" ng-click="saveAdminUser(forms.addAdminUserForm)" data-i18n="_SaveButton_"></div>
+          </li>
+          <li>
+              <div  class="button-custom" role="button" ng-click="cancelAdminUser()" data-i18n="_CancelButton_"></div>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div class="row">
+      <form name="forms.addAdminUserForm" class="form-horizontal col-md-6" role="form" novalidate>
+        <div class="form-group">
+          <label class="form-control-label col-sm-3" for="fullname" data-i18n="_fullNameLabel_"></label>
+          <div class="col-sm-9">
+            <input class="form-control" ng-model="fullname.value" name="fullname" required>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-control-label col-sm-3" for="email" data-i18n="_emailLabel_"></label>
+          <div class="col-sm-9">
+            <input class="form-control" ng-model="email.value" name="email" required>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-control-label col-sm-3" for="password" data-i18n="_passwordLabel_"></label>
+          <div class="col-sm-9">
+            <input class="form-control" ng-model="password.value" name="password" required>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-control-label col-sm-3" for="sUser" data-i18n="_superUserLabel_"></label>
+          <div class="col-sm-9">
+              <select name="sUser" ng-model="Superuser.value" class="form-control">
+                  <option value="No" data-i18n="_OptionNO_"></option>
+                  <option value="Yes"  data-i18n="_OptionYES_"></option>
+              </select>
+          </div>
+        </div>
+        </form>
+
+        <div class="col-md-6" ng-hide="Superuser.value == 'Yes'">
+        <div class="row">
+          <div class="col-sm-7">
+            <label class="med-small assignRoleGridLebl" data-i18n="_AssignedEmbRoles_"></label>
+          </div>
+          <div class="col-sm-5">
+            <div  class="button-custom smaller assignButton" role="button" data-toggle="modal" data-target=".bs-example-modal-lg" data-i18n="_AdminUserAssignRoleButton_"></div>
+          </div>
+        </div>
+        <p></p>
+        <span ng-if="!(assignedEmbarkRolesGrid.data.length>0)" data-i18n="_NoRoleRows_"></span>
+        <div class="row assignedEmbarkRolesGridPadding">
+          <div class="col-sm-12">
+            <div id="assignedAdminEmbRoles" ui-grid="assignedEmbarkRolesGrid" ng-if="assignedEmbarkRolesGrid.data.length>0" ng-style="GridAdjust('assignedEmbarkRolesGrid','assignedAdminEmbRoles')" ui-grid-selection ui-grid-auto-resize class="assignedEmbarkRolesGrid"></div>
+          </div>
+        </div>
+      </div>
+      <!-- popup screen -->
+      <div class="modal fade bs-example-modal-lg"  focus-group focus-group-head="loop" focus-group-tail="loop" focus-stacktabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+		  <div class="modal-dialog">
+			<div class="modal-content">
+			  <div class="modal-body">
+          <div class="line-bottom action-buttons-container clearfix">
+            <div class="col-sm-8">
+              <label class="med-small assignRoleGridLebl" data-i18n="_SelectEmbarkRole_"></label>
+            </div>
+            <div class="col-sm-4 action-buttons">
+              <div  class="button-custom smaller assignButton" role="button" data-dismiss="modal" data-i18n="_CloseButton_"></div>
+            </div>
+          </div>
+          <p></p>
+          <span ng-if="!(embarkRolesGrid.data.length>0)" data-i18n="_NoRoleRows_"></span>
+          <div class="row assignedEmbarkRolesGridPadding">
+            <div class="col-sm-12">
+              <div id="selectAdminEmbRoles" ui-grid="embarkRolesGrid" ng-if="embarkRolesGrid.data.length>0" ng-style="GridAdjust('embarkRolesGrid','selectAdminEmbRoles')"  ui-grid-selection ui-grid-auto-resize class="popupgrid"></div>
+            </div>
+          </div>
+			  </div>
+			</div>
+		  </div>
+		  </div>
+      <!-- end popup screen -->
+
+
+    </div>
+  </span>
+</div>
+</div>
+<!-- Delete popup screen -->
+<confirm on-confirm="confirmedDelete()" on-cancel="cancelDelete()"><div data-i18n="_AdminUserDeleteModalLabel_"></div></confirm>
+<!-- end popup screen -->
+</div>

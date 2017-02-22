@@ -1,0 +1,43 @@
+<!--New Task Group Form-->
+<div class="modal fade" id="taskGroupModal" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <form class="form-horizontal" name="forms.newTaskGroupForm" role="form"  ng-submit="saveTaskGroup(forms.newTaskGroupForm)" novalidate>
+        <div class="modal-header action-buttons-container">
+          <div class="title">
+            <h3>{{modalFormLabel}}</h3>
+          </div>
+          <div class="action-buttons">
+            <ul class="action-button">
+              <li>
+                <button type="submit" class="button-custom" data-i18n="_SaveButton_"></button>
+              </li>
+              <li>
+                <button type="button" class="button-custom" data-dismiss="modal" data-i18n="_CloseButton_"></button>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="taskGroupGroupName" class="form-control-label col-sm-3" data-i18n="_TaskGroupGroupNameLabel_"></label>
+            <div class="col-sm-9">
+              <input type="text" class="form-control" name="taskGroupGroupName" ng-model="taskGroupNameValue.value" required>
+            </div>
+          </div>
+
+          <div class="taskGroupGroupLabelsContainer">
+            <div class="row taskGroupGroupLabelsContainerHeader">
+              <p class= "gridTitle col-md-4" data-i18n="_TaskGroupGroupLabelsGridTitle_"></p>
+              <div class="col-md-8">
+                <button type="button" class="button-custom-sm" ng-click="addRow('taskGroupGroupLabelsGrid')" data-i18n="_AddTaskGroupGroupLabelButton_"></button>
+              </div>
+            </div>
+            <div id="taskGroupGroupLabelsGrid" ui-grid="taskGroupGroupLabelsGridOptions" ng-style="GridAdjust('taskGroupGroupLabelsGridOptions','taskGroupGroupLabelsGrid')" ui-grid-edit ui-grid-auto-resize ui-grid-cellNav class="grid"></div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns="http://www.springframework.org/schema/security"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:beans="http://www.springframework.org/schema/beans"
+	xmlns:sec="http://www.springframework.org/schema/security"
+	xsi:schemaLocation="
+	  http://www.springframework.org/schema/security
+	  http://www.springframework.org/schema/security/spring-security-3.2.xsd
+	  http://www.springframework.org/schema/beans
+	  http://www.springframework.org/schema/beans/spring-beans-4.0.xsd">
+
+	<beans:import resource="servlet-context.xml" />
+
+	<http use-expressions="true" entry-point-ref="restAuthenticationEntryPoint">
+		<access-denied-handler ref="failureHandler" />
+		<intercept-url pattern="/api/rest/embark/**"
+			access="hasAnyRole('ROLE_USER','ROLE_SUPERUSER')" />
+		<intercept-url pattern="/api/rest/session/**"
+			access="hasAnyRole('ROLE_USER','ROLE_SUPERUSER')" />	
+		<intercept-url pattern="/api/rest/admin/**" access="hasRole('ROLE_SUPERUSER')" />
+		<!-- requires-channel="https" -->
+		<sec:form-login authentication-success-handler-ref="successHandler"
+			authentication-failure-handler-ref="failureHandler"
+			login-processing-url="/api/security/login" username-parameter="loginId"
+			password-parameter="loginPassword" />
+		<sec:logout logout-url="/api/security/logout"
+			success-handler-ref="logoutHandler" invalidate-session="true" />
+	</http>
+
+	<beans:bean id="restAuthenticationEntryPoint"
+		class="com.rbc.b2e.embark.admin.security.RestAuthenticationEntryPoint" />
+	<beans:bean id="successHandler"
+		class="com.rbc.b2e.embark.admin.security.RestAuthenticationSuccessHandler" />
+	<beans:bean id="failureHandler"
+		class="com.rbc.b2e.embark.admin.security.RestAuthenticationFailureHandler" />
+	<beans:bean id="logoutHandler"
+		class="com.rbc.b2e.embark.admin.security.RestSecurityContextLogoutHandler" />
+	<authentication-manager alias="authenticationManager">
+		<authentication-provider ref="cloudantAuthenticationProvider" />
+	</authentication-manager>
+
+	<beans:bean id="cloudantAuthenticationProvider"
+		class="com.rbc.b2e.embark.admin.security.EmbarkAdminDAOAuthenticationProvider">
+		<beans:property name="passwordEncoder" ref="passwordEncoder" />
+		<beans:property name="adminServiceProvider" ref="adminServer" />
+		<beans:property name="maxLoginIntent" value="3" />
+	</beans:bean>
+
+	<beans:bean id="passwordEncoder"
+		class="org.springframework.security.crypto.password.StandardPasswordEncoder" />
+
+	<beans:bean id="embarkPasswordEncoder"
+		class="com.rbc.b2e.embark.admin.security.EmbarkPasswordEncoder">
+		<beans:property name="passwordEncoder" ref="passwordEncoder" />
+	</beans:bean>
+
+</beans:beans>

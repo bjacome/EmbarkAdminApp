@@ -1,0 +1,134 @@
+<!--New Cohort Form-->
+<div ng-if="formLabel === 'New Cohort' || formLabel === 'Edit Cohort'">
+  <form name="forms.newCohortForm" class="form-horizontal" role="form" ng-submit="submitCohort(forms.newCohortForm)" novalidate>
+
+    <div class="line-bottom action-buttons-container clearfix">
+      <div class="title">
+        <h3>{{formLabel}}</h3>
+      </div>
+      <div class="action-buttons">
+        <ul class="action-button ">
+          <li>
+            <button type="submit" class="button-custom" data-i18n="_SaveButton_"></button>
+          </li>
+          <li>
+            <div  class="button-custom" role="button" ng-click="cancelForm()" data-i18n="_CancelButton_"></div>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-7">
+        <div class="form-group row">
+          <label for="cohortName" class="form-control-label col-sm-4 left-indent" data-i18n="_CohortNameLabel_"></label>
+          <div class="col-sm-8">
+            <input type="text" class="form-control" name="cohortName" ng-model="cohortNameValue.value" required="">
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label class="control-label col-sm-4 left-indent" for="startDate" data-i18n="_CohortStartDate_"></label>
+          <div class="col-sm-8">
+            <div class="input-group date">
+                <input type="text" placeholder="YYYY-MM-DD" class="form-control bg-white" name="startDate" id="startDate" ng-model="startDate" data-date-time-picker readonly required/>
+                <span class="input-group-addon">
+                    <span class="glyphicon glyphicon-calendar"></span>
+                </span>
+            </div>
+          </div>
+        </div>
+        <!--
+        <div class="form-group row">
+          <label for="startDate" class="form-control-label col-sm-3" data-i18n="_CohortStartDate_"></label>
+          <div class="col-sm-9">
+            <input type="date" class="form-control" name="startDate" ng-model="startDate.value" placeholder="yyyy-mm-dd" required="">
+          </div>
+        </div> -->
+
+        <div class="form-group">
+          <label class="control-label col-sm-4 left-indent" for="disableDate" data-i18n="_CohortDisableDate_"></label>
+          <div class="col-sm-8">
+            <div class="input-group date">
+                <input type="text" placeholder="YYYY-MM-DD" class="form-control bg-white" name="disableDate" id="disableDate" ng-model="disableDate" data-date-time-picker readonly/>
+                <span class="input-group-addon">
+                    <span class="glyphicon glyphicon-calendar"></span>
+                </span>
+            </div>
+          </div>
+        </div>
+
+        <!--
+        <div class="form-group row">
+          <label for="disableDate" class="form-control-label col-sm-3" data-i18n="_CohortDisableDate_"></label>
+          <div class="col-sm-9">
+            <input type="date" class="form-control" name="disableDate" ng-model="disableDate.value" placeholder="yyyy-mm-dd" required="">
+          </div>
+        </div> -->
+
+        <div class="cohortTitlesContainer">
+          <div class="row cohortTitlesContainerHeader">
+            <p class= "gridTitle col-md-4" data-i18n="_CohortTitlesGridTitle_"></p>
+            <div class="col-md-8">
+              <button type="button" class="button-custom-sm" ng-click="addRow('cohortTitlesGrid')" data-i18n="_AddCohortTitleButton_"></button>
+            </div>
+          </div>
+          <div id="cohortTitlesGrid" ui-grid="cohortTitlesGridOptions" ng-style="GridAdjust('cohortTitlesGridOptions','cohortTitlesGrid')" ui-grid-edit ui-grid-auto-resize ui-grid-cellNav class="grid"></div>
+        </div>
+      </div>
+
+      <div class="col-md-5">
+        <div class="checklistContainer">
+          <div class="row checklistContainerHeader clearfix">
+
+
+            <p class="gridTitle col-sm-3" data-i18n="_ChecklistTreeTitle_"></p>
+
+            <div class="col-sm-4">
+              <div class="button-custom" role="button" ng-if="haveChilds()"  ng-click="collapseOrExpandAll('cohortsTree','Cohort')" data-i18n="{{collapseOrExpandCButtonLabel}}"></div>
+            </div>
+            <div class="col-sm-5">
+              <button type="button" class="button-custom-sm" data-toggle="modal" data-target="#taskGroupModal" ng-click="newTaskGroup('Cohort')" data-i18n="_AddGroupButton_"></button>
+            </div>
+          </div>
+        </div>
+
+        <span ng-if="!(cohortGroups.length > 0)" data-i18n="_NoCohortTreeGroups_"></span>
+        <div ui-tree data-drag-enabled="false" class="tree-container roles-tree" ng-if="cohortGroups.length > 0">
+          <ol ui-tree-nodes ng-model="cohortGroups" id="cohortsTree">
+            <li ng-repeat="group in cohortGroups" ui-tree-node collapsed="true;">
+              <div ui-tree-handle class="tree-node tree-node-content">
+                <a class="btn btn-success btn-xs" ng-if="group.taskList && group.taskList.length > 0" data-nodrag ng-click="toggle(this)">
+                  <span class="glyphicon" ng-class="{'glyphicon-chevron-right': collapsed,'glyphicon-chevron-down': !collapsed}"></span>
+                </a>
+                {{group.key}}
+                <a class="pull-right btn btn-primary btn-xs" title="Remove Task Group" data-nodrag ng-click="remove(this) ; haveChilds()">
+                  <span class="glyphicon glyphicon-remove"></span>
+                </a>
+                <a class="pull-right btn btn-primary btn-xs" title="Add New Task" data-nodrag data-toggle="modal" data-target="#taskModal" ng-click="newSubTask(this)" style="margin-right: 8px;">
+                  <span class="glyphicon glyphicon-plus"></span>
+                </a>
+                <a class="pull-right btn btn-primary btn-xs" title="Edit Task Group" data-nodrag data-toggle="modal" data-target="#taskGroupModal" ng-click="editTaskGroup(group)" style="margin-right: 8px;">
+                  <span class="glyphicon glyphicon-pencil"></span>
+                </a>
+              </div>
+              <ol ui-tree-nodes="" ng-model="group.taskList" ng-class="{hidden: collapsed}">
+                <li ng-repeat="task in group.taskList" ui-tree-node style="margin:15px;"   ng-style="isUndated(task)  && {'color':'red'} || {'color':'black'}">
+                  <div ui-tree-handle>
+                    {{task.key}}
+                    <a class="pull-right btn btn-primary btn-xs" title="Remove Task" data-nodrag ng-click="remove(this) ; haveChilds()">
+                      <span class="glyphicon glyphicon-remove"></span>
+                    </a>
+                    <a class="pull-right btn btn-primary btn-xs" title="Edit Task" data-nodrag data-toggle="modal" data-target="#taskModal" ng-click="editTask(task)" style="margin-right: 8px;">
+                      <span class="glyphicon glyphicon-pencil"></span>
+                    </a>
+                  </div>
+                </li>
+              </ol>
+            </li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns="http://www.springframework.org/schema/mvc"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:beans="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+	<!-- DispatcherServlet Context: defines this servlet's request-processing 
+		infrastructure -->
+
+	<!-- Enables the Spring MVC @Controller programming model -->
+	<annotation-driven></annotation-driven>
+
+
+
+	<!-- Configure to plugin JSON as request and response in method handler -->
+	<beans:bean
+		class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter">
+		<beans:property name="messageConverters">
+			<beans:list>
+				<beans:ref bean="jsonMessageConverter" />
+			</beans:list>
+		</beans:property>
+	</beans:bean>
+
+	<!-- Configure bean to convert JSON to POJO and vice versa -->
+	<beans:bean id="jsonMessageConverter"
+		class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+	</beans:bean>
+
+	<!-- MySQL connection beans -->
+	<beans:bean id="mysqlDatasourceProvider"
+		class="com.rbc.b2e.embark.admin.connection.JndiDatasourceProvider">
+		<beans:constructor-arg value="cleardb"></beans:constructor-arg>
+		<beans:constructor-arg value="#{systemEnvironment['VCAP_SERVICES']}"></beans:constructor-arg>
+	</beans:bean>
+
+	<!-- CloudantClientMgr beans -->
+	<beans:bean id="usersCloudantClientMgrProvider"
+		class="com.rbc.b2e.embark.admin.connection.CloudantClientMgrProvider" init-method="init">
+			<beans:constructor-arg ref="adminServer" />
+			<beans:constructor-arg type="java.lang.String"
+			value="onboarding_users" />
+	</beans:bean>
+
+	<beans:bean id="adminServer"
+		class="com.rbc.b2e.embark.admin.model.service.sql.SqlAdminServer">
+		<beans:constructor-arg ref="mysqlDatasourceProvider" />
+	</beans:bean>
+
+
+	<beans:bean id="multipartResolver"
+		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<!-- one of the properties available; the maximum file size in bytes -->
+		<beans:property name="maxUploadSize" value="100000" />
+	</beans:bean>
+	<context:component-scan base-package="com.rbc.b2e.embark.admin.controller" />
+</beans:beans>

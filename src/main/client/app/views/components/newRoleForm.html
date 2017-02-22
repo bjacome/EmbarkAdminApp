@@ -1,0 +1,104 @@
+<!--New Role Form-->
+<div ng-if="formLabel === 'New Role' || formLabel === 'Edit Role'">
+  <form name="forms.newRoleForm" id="newRForm" class="form-horizontal" role="form" ng-submit="submitRole(forms.newRoleForm)" novalidate>
+
+    <div class="line-bottom action-buttons-container clearfix">
+      <div class="title">
+        <h3>{{formLabel}}</h3>
+      </div>
+      <div class="action-buttons">
+        <ul class="action-button ">
+          <li>
+            <button type="submit" class="button-custom" data-i18n="_SaveButton_"></button>
+          </li>
+          <li>
+            <div  class="button-custom" role="button" ng-click="cancelForm()" data-i18n="_CancelButton_"></div>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-6">
+        <div class="form-group row">
+          <label class="form-control-label col-sm-3" for="roleId" data-i18n="_RoleNameLabel_"></label>
+          <div class="col-sm-9">
+            <input type="text" name="roleId" class="form-control" ng-model="roleNameValue.value" required=""/>
+          </div>
+        </div>
+
+        <div class="roleTitlesContainer">
+          <div class="row roleTitlesContainerHeader">
+            <p class= "gridTitle col-md-4" data-i18n="_RoleTitlesGridTitle_"></p>
+            <div class="col-md-8">
+              <button type="button" class="button-custom-sm" ng-click="addRow('roleTitlesGrid')" data-i18n="_AddTitleButton_"></button>
+            </div>
+          </div>
+          <div id="roleTitlesGrid" ui-grid="roleTitlesGridOptions" ng-style="GridAdjust('roleTitlesGridOptions','roleTitlesGrid')" ui-grid-edit ui-grid-auto-resize ui-grid-cellNav class="grid"></div>
+        </div>
+
+        <div class="offerStatusesContainer">
+          <div class="row offerStatusesContainerHeader">
+            <p class="gridTitle col-md-4" data-i18n="_OfferStatusesGridTitle_"></p>
+            <div class="col-md-8">
+              <button type="button" class="button-custom-sm" ng-click="addRow('offerStatusesGrid')" data-i18n="_AddStatusButton_"></button>
+            </div>
+          </div>
+          <div id="offerStatusesGrid" ui-grid="offerStatusesGridOptions" ng-style="GridAdjust('offerStatusesGridOptions','offerStatusesGrid')" ui-grid-edit ui-grid-auto-resize ui-grid-cellNav class="grid"></div>
+        </div>
+      </div>
+
+      <div class="col-md-6">
+        <div class="checklistContainer">
+          <div class="row checklistContainerHeader">
+            <p class="gridTitle col-md-3" data-i18n="_ChecklistTreeTitle_"></p>
+            <div class="col-md-4">
+              <div class="button-custom" role="button" ng-if="haveChilds()" ng-click="collapseOrExpandAll('rolesTree','Role')" data-i18n="{{collapseOrExpandRButtonLabel}}"></div>
+            </div>
+            <div class="col-md-4">
+              <button type="button" class="button-custom-sm" data-toggle="modal" data-target="#taskGroupModal" ng-click="newTaskGroup('Role')" data-i18n="_AddGroupButton_"></button>
+            </div>
+
+          </div>
+
+          <span ng-if="!(roleGroups.length > 0)" data-i18n="_NoRoleTreeGroups_"></span>
+          <div ui-tree data-drag-enabled="false" class="tree-container roles-tree" ng-if="roleGroups.length > 0">
+            <ol ui-tree-nodes ng-model="roleGroups" id="rolesTree">
+              <li ng-repeat="group in roleGroups" ui-tree-node collapsed="true;">
+                <div ui-tree-handle class="tree-node tree-node-content">
+                  <a class="btn btn-success btn-xs" ng-if="group.taskList && group.taskList.length > 0" data-nodrag ng-click="toggle(this)">
+                    <span class="glyphicon" ng-class="{'glyphicon-chevron-right': collapsed,'glyphicon-chevron-down': !collapsed}">
+                    </span>
+                  </a>
+                  {{group.key}}
+                  <a class="pull-right btn btn-primary btn-xs" title="Remove Task Group" data-nodrag ng-click="remove(this); haveChilds()">
+                    <span class="glyphicon glyphicon-remove"></span>
+                  </a>
+                  <a class="pull-right btn btn-primary btn-xs" title="Add New Task" data-nodrag data-toggle="modal" data-target="#taskModal" ng-click="newSubTask(this)" style="margin-right: 8px;">
+                    <span class="glyphicon glyphicon-plus"></span>
+                  </a>
+                  <a class="pull-right btn btn-primary btn-xs" title="Edit Task Group" data-nodrag data-toggle="modal" data-target="#taskGroupModal" ng-click="editTaskGroup(group)" style="margin-right: 8px;">
+                    <span class="glyphicon glyphicon-pencil"></span>
+                  </a>
+                </div>
+                <ol ui-tree-nodes="" ng-model="group.taskList" ng-class="{hidden: collapsed}">
+                  <li ng-repeat="task in group.taskList" ui-tree-node style="margin:15px;">
+                    <div ui-tree-handle>
+                      {{task.key}}
+                      <a class="pull-right btn btn-primary btn-xs" title="Remove Task" data-nodrag ng-click="remove(this) ; haveChilds()">
+                        <span class="glyphicon glyphicon-remove"></span>
+                      </a>
+                      <a class="pull-right btn btn-primary btn-xs" title="Edit Task" data-nodrag data-toggle="modal" data-target="#taskModal" ng-click="editTask(task)" style="margin-right: 8px;">
+                        <span class="glyphicon glyphicon-pencil"></span>
+                      </a>
+                    </div>
+                  </li>
+                </ol>
+              </li>
+            </ol>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
